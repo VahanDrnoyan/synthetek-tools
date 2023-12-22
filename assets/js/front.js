@@ -1,4 +1,5 @@
-var wocs_loading_first_time = true;//simply flag var
+var wocs_loading_first_time = true;
+var woocs_array_of_get = jQuery.parseJSON(SYNTHETEK_OPTIONS.woocs_array_of_get);
 var sumbit_currency_changing = true;//juts a flag variable for drop-down redraws when prices redraws by AJAX
 jQuery(function ($) {
 
@@ -7,7 +8,6 @@ jQuery(function ($) {
         return this;
     };
 
-    woocs_array_of_get = jQuery.parseJSON(woocs_array_of_get);
 
     //wp-content\plugins\woocommerce\assets\js\frontend\cart.js
     if (Object.keys(woocs_array_of_get).length !== 0) {
@@ -26,7 +26,7 @@ jQuery(function ($) {
     }
 
 
-    woocs_array_no_cents = jQuery.parseJSON(woocs_array_no_cents);
+    var woocs_array_no_cents = jQuery.parseJSON(SYNTHETEK_OPTIONS.woocs_array_no_cents);
 
 
     if (woocs_array_of_get.currency != undefined || woocs_array_of_get.removed_item != undefined)
@@ -45,7 +45,7 @@ jQuery(function ($) {
 
     //+++++++++++++++++++++++++++++++++++++++++++++++
     //console.log(woocs_drop_down_view);
-    if (woocs_drop_down_view == 'chosen' || woocs_drop_down_view == 'chosen_dark') {
+    if (SYNTHETEK_OPTIONS.woocs_drop_down_view == 'chosen' || SYNTHETEK_OPTIONS.woocs_drop_down_view == 'chosen_dark') {
         try {
             if (jQuery("select.woocommerce-currency-switcher").length) {
                 jQuery("select.woocommerce-currency-switcher").chosen({
@@ -63,7 +63,7 @@ jQuery(function ($) {
 
 
 
-    if (woocs_drop_down_view == 'ddslick') {
+    if (SYNTHETEK_OPTIONS.woocs_drop_down_view == 'ddslick') {
         try {
             jQuery.each(jQuery('select.woocommerce-currency-switcher'), function (index, obj) {
                 var width = jQuery(obj).data('width');
@@ -87,7 +87,6 @@ jQuery(function ($) {
                                 woocs_redirect(data.selectedData.value);
                             }
 
-
                         }
                     }
                 });
@@ -101,7 +100,7 @@ jQuery(function ($) {
 
 
 
-    if (woocs_drop_down_view == 'wselect' && woocs_is_mobile != 1) {
+    if (SYNTHETEK_OPTIONS.woocs_drop_down_view == 'wselect' && SYNTHETEK_OPTIONS.woocs_is_mobile != 1) {
         try {
             //https://github.com/websanova/wSelect#wselectjs
             jQuery('select.woocommerce-currency-switcher').wSelect({
@@ -119,7 +118,6 @@ jQuery(function ($) {
                 return false;
             }
             //***
-
             if (Object.keys(woocs_array_of_get).length == 0) {
                 window.location = window.location.href + '?currency=' + jQuery(this).data('currency');
             } else {
@@ -140,7 +138,7 @@ jQuery(function ($) {
             var to = jQuery(this).parent('.woocs_converter_shortcode').find('.woocs_converter_shortcode_to').eq(0).val();
             var precision = jQuery(this).parent('.woocs_converter_shortcode').find('.woocs_converter_shortcode_precision').eq(0).val();
             var results_obj = jQuery(this).parent('.woocs_converter_shortcode').find('.woocs_converter_shortcode_results').eq(0);
-            jQuery(results_obj).val(woocs_lang_loading + ' ...');
+            //jQuery(results_obj).val(SYNTHETEK_OPTIONS.woocs_lang_loading + ' ...');
             var data = {
                 action: "woocs_convert_currency",
                 amount: amount,
@@ -149,7 +147,7 @@ jQuery(function ($) {
                 precision: precision
             };
 
-            jQuery.post(woocs_ajaxurl, data, function (value) {
+            jQuery.post(SYNTHETEK_OPTIONS.woocs_ajaxurl, data, function (value) {
                 jQuery(results_obj).val(value);
             });
 
@@ -169,7 +167,7 @@ jQuery(function ($) {
                 exclude: jQuery(this).data('exclude')
             };
 
-            jQuery.post(woocs_ajaxurl, data, function (html) {
+            jQuery.post(SYNTHETEK_OPTIONS.woocs_ajaxurl, data, function (html) {
                 jQuery(_this).parent('.woocs_rates_shortcode').html(html);
             });
 
@@ -179,8 +177,9 @@ jQuery(function ($) {
     }
 
     //if we using js price update while the site is cached
-    if (typeof woocs_shop_is_cached !== 'undefined') {
-        if (woocs_shop_is_cached) {
+    if (typeof SYNTHETEK_OPTIONS.woocs_shop_is_cached !== 'undefined') {
+        if (SYNTHETEK_OPTIONS.woocs_shop_is_cached !== '0') {
+
             sumbit_currency_changing = false;
             if (typeof woocs_array_of_get.currency === 'undefined') {
 
@@ -203,7 +202,7 @@ jQuery(function ($) {
                     action: "woocs_get_products_price_html",
                     products_ids: products_ids
                 };
-                jQuery.post(woocs_ajaxurl, data, function (data) {
+                jQuery.post(SYNTHETEK_OPTIONS.woocs_ajaxurl, data, function (data) {
 
                     data = jQuery.parseJSON(data);
 
@@ -215,7 +214,7 @@ jQuery(function ($) {
                         //***
                         jQuery('.woocommerce-currency-switcher').val(data.current_currency);
                         //***
-                        if (woocs_drop_down_view == 'chosen' || woocs_drop_down_view == 'chosen_dark') {
+                        if (SYNTHETEK_OPTIONS.woocs_drop_down_view == 'chosen' || SYNTHETEK_OPTIONS.woocs_drop_down_view == 'chosen_dark') {
                             try {
                                 if (jQuery("select.woocommerce-currency-switcher").length) {
                                     jQuery("select.woocommerce-currency-switcher").chosen({
@@ -228,7 +227,7 @@ jQuery(function ($) {
                             }
                         }
                         //***
-                        if (woocs_drop_down_view == 'ddslick') {
+                        if (SYNTHETEK_OPTIONS.woocs_drop_down_view == 'ddslick') {
                             try {
                                 jQuery('select.woocommerce-currency-switcher').ddslick('select', {index: data.current_currency, disableTrigger: true});
                             } catch (e) {
@@ -236,7 +235,7 @@ jQuery(function ($) {
                             }
                         }
                         //***
-                        if (woocs_drop_down_view == 'wselect' && woocs_is_mobile != 1) {
+                        if (SYNTHETEK_OPTIONS.woocs_drop_down_view == 'wselect' && SYNTHETEK_OPTIONS.woocs_is_mobile != 1) {
                             //https://github.com/websanova/wSelect
                             try {
                                 jQuery('select.woocommerce-currency-switcher').val(data.current_currency).change();
