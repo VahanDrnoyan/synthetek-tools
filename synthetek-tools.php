@@ -28,7 +28,7 @@ if( !class_exists( 'MV_Testimonials' ) ){
         public function register_scripts(){
             wp_enqueue_script( 'jquery.ddslick.min', SYNTHETEK_TOOLS_URL . 'assets/js/jquery.ddslick.min.js', array( 'jquery' ), SYNTHETEK_TOOLS_VERSION, true );
             wp_enqueue_script( 'woocommerce-currency-switcher', SYNTHETEK_TOOLS_URL . 'assets/js/front.js', array( 'jquery' ), SYNTHETEK_TOOLS_VERSION, true );
-
+            wp_enqueue_style('dashicons');
             $default_currency = 'USD'; // hardcoded
             $current_currency = \Synthetek\get_currency();
 
