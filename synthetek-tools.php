@@ -29,6 +29,7 @@ if( !class_exists( 'MV_Testimonials' ) ){
             wp_enqueue_script( 'jquery.ddslick.min', SYNTHETEK_TOOLS_URL . 'assets/js/jquery.ddslick.min.js', array( 'jquery' ), SYNTHETEK_TOOLS_VERSION, true );
             wp_enqueue_script( 'woocommerce-currency-switcher', SYNTHETEK_TOOLS_URL . 'assets/js/front.js', array( 'jquery' ), SYNTHETEK_TOOLS_VERSION, true );
             wp_enqueue_style('dashicons');
+
             $default_currency = 'USD'; // hardcoded
             $current_currency = \Synthetek\get_currency();
 
@@ -132,6 +133,8 @@ if( !class_exists( 'MV_Testimonials' ) ){
                 }
                 $woocs_array_of_get = str_replace("'", "", json_encode($sanitized_get_array));
             }
+            $checkout_url = remove_query_arg( array('currency'), wc_get_checkout_url() );
+
             $isLocalised = wp_localize_script( 'woocommerce-currency-switcher', 'SYNTHETEK_OPTIONS', array(
                 'woocs_is_mobile' => (int) wp_is_mobile(),
                 'woocs_drop_down_view' => "ddslick",
@@ -141,7 +144,8 @@ if( !class_exists( 'MV_Testimonials' ) ){
                 'woocs_array_no_cents' => $woocs_array_no_cents,
                 'woocs_ajaxurl' => $woocs_ajaxurl,
                 'woocs_lang_loading' => $woocs_lang_loading,
-                'woocs_shop_is_cached' => $woocs_shop_is_cached
+                'woocs_shop_is_cached' => $woocs_shop_is_cached,
+                'checkout_url' => $checkout_url
             ));
 
         }

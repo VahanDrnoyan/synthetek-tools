@@ -350,3 +350,76 @@ function woocs_refresh_mini_cart(delay) {
     }, delay);
 
 }
+jQuery(document).ready(function ($) {
+       var countries = {
+        USD: 'US',
+        CAD: 'CA',
+        EUR: 'DE',
+        GBP: 'GB',
+        AUD: 'AU',
+        ZAR: 'ZA',
+        HKD: 'HK',
+        NZD: 'NZ'
+    };
+    var currency = '<?php echo $currency; ?>';
+    var country = countries[currency];
+
+    $('body').trigger('update_checkout');
+
+
+    // Change currency
+    $('.flag-item .flag, .flag-item .flag-label').on('click', function (e) {
+        var flag = $(this).closest('.flag-item'),
+            tabs = $('.shipping-info .tab'),
+            currency = 'USD';
+
+        if (flag.hasClass('flag-item-us')) {
+            tabs.hide();
+            $('.tab-item-us').show();
+            currency = 'USD';
+        } else if (flag.hasClass('flag-item-ca')) {
+            tabs.hide();
+            $('.tab-item-ca').show();
+            currency = 'CAD'
+        } else if (flag.hasClass('flag-item-eu')) {
+            tabs.hide();
+            $('.tab-item-eu').show();
+            currency = 'EUR';
+        } else if (flag.hasClass('flag-item-uk')) {
+            tabs.hide();
+            $('.tab-item-gb').show();
+            currency = 'GBP';
+        } else if (flag.hasClass('flag-item-au')) {
+            tabs.hide();
+            $('.tab-item-au').show();
+            currency = 'AUD';
+        } else if (flag.hasClass('flag-item-za')) {
+            tabs.hide();
+            $('.tab-item-za').show();
+            currency = 'ZAR';
+        } else if (flag.hasClass('flag-item-hk')) {
+            tabs.hide();
+            $('.tab-item-hk').show();
+            currency = 'HKD';
+        } else if (flag.hasClass('flag-item-nz')) {
+            tabs.hide();
+            $('.tab-item-nz').show();
+            currency = 'NZD';
+        }
+
+        // Block content
+        $( '.woocommerce' ).block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+
+        // Redirect to another page
+        window.location.href = SYNTHETEK_OPTIONS.checkout_url + '?currency=' + currency + '&wmcs_set_currency=' + currency ;
+
+    });
+
+
+});
